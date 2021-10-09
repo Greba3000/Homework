@@ -16,4 +16,4 @@ def func(num):
 
 
 if __name__ == '__main__':
-    func('f')
+    func(1)
