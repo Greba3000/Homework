@@ -5,15 +5,18 @@ def supressing_exceptions(func):
         try:
             func(*args, **kwargs)
         except Exception as exc:
-            print(f'We had exception - {exc} {type(exc)}')
+            print(f'We had exception - {exc} {type(exc)} in {func}')
     return wrapper
 
 
 @supressing_exceptions
-def func(num):
+def func1(num):
     x = num / 0
-    print("I'm here!")  # how it print?
+    print("I'm here! func1")  # how it print? Neither because except stops script execution
 
+def func2():
+    print("I'm here! func2")
 
 if __name__ == '__main__':
-    func(1)
+    func1(1)
+    func2()
