@@ -35,11 +35,10 @@ if __name__ == "__main__":
 
     print(next(er1))
     print(next(er1))
-    # print(next(er1))
-    # print(next(er1))
+    print(next(er1))  # print('Out of numbers!') and StopIteration
+    # print(next(er1))  # if 'Out of numbers!' pass here as arg we can't stop iteration without StopIteration
 
-    er2 = EvenRange(3, 14)
+    er2 = EvenRange(3, 14)  # in the end we have print('Out of numbers!')
     # print(next(er2))
     for number in er2:
         print(number, end=" ")
-
