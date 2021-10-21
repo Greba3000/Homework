@@ -4,7 +4,7 @@ A command-line utility for reading news with RSS, written in Python 3.9. The uti
 
 ## Installation
 
-$ pip install rss_reader
+$ pip install grebarss
 
 ## Usage
 
