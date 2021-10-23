@@ -37,11 +37,13 @@ In case of using --json argument utility convert the news into JSON format. JSON
 
 Example of item containing news:
 {
-  "item: [
-    {"title": "title_data"},
-    {"pubDate": "pubDate_data"},
-    {"link": "link_data"}
-  ]
+    "item": [
+        {
+            "title": "title_data",
+            "pubDate": "pubDate_data",
+            "link": "link_data"
+        }
+    ]
 }
 
 ## License
