@@ -1,0 +1,71 @@
+[
+    {
+        "https://people.onliner.by/feed": [
+            {
+                "item": [
+                    {
+                        "title": "В Национальный календарь прививок внесена вакцинация от коронавируса",
+                        "pubDate": "Thu, 19 Oct 2021 19:19:58 +0300",
+                        "link": "https://people.onliner.by/2021/10/21/kalendar-privivok"
+                    },
+                    {
+                        "title": "Может ли коронавирус привести к бесплодию? Говорим со специалистом о влиянии COVID-19 на фертильность",
+                        "pubDate": "Thu, 19 Oct 2021 17:00:10 +0300",
+                        "link": "https://people.onliner.by/2021/10/21/govorim-s-medikom-o"
+                    },
+                    {
+                        "title": "Облако от извержения вулкана на Канарах добралось и до Минска. Это опасно?",
+                        "pubDate": "Sat, 23 Oct 2021 11:39:32 +0300",
+                        "link": "https://people.onliner.by/2021/10/23/oblako-dobralos-i-do-minska"
+                    },
+                    {
+                        "title": "Якім быў секс у савецкай Беларусі і як да гэтай тэмы ставіліся камуністы? Аповед гісторыка на далікатную тэму",
+                        "pubDate": "Sat, 23 Oct 2021 10:10:32 +0300",
+                        "link": "https://people.onliner.by/2021/10/23/seks-u-saveckaj-belarusi"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "https://brestcity.com/blog/feed": [
+            {
+                "item": [
+                    {
+                        "title": "ГАИ Брестчины 22-25 октября усиливает надзор в сельской местности",
+                        "pubDate": "Thu, 19 Oct 2021 15:49:41 +0000",
+                        "link": "https://brestcity.com/blog/gai-usilivaet-nadzor-v-selskoj-mestnosti"
+                    },
+                    {
+                        "title": "Житель Бреста со знакомым украли со стройплощадки в Могилеве 660 метров кабеля",
+                        "pubDate": "Thu, 19 Oct 2021 14:11:36 +0000",
+                        "link": "https://brestcity.com/blog/ukrali-660-metrov-kabelya"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "https://www.theguardian.com/international/rss": [
+            {
+                "item": [
+                    {
+                        "title": "Cop26 climate deal will be harder than Paris accord, admits Sharma",
+                        "pubDate": "Sat, 23 Oct 2021 06:00:33 GMT",
+                        "link": "https://www.theguardian.com/environment/2021/oct/23/cop26-climate-deal-harder-than-paris-accord-admits-alok-sharma"
+                    },
+                    {
+                        "title": "Facebook crisis grows as new whistleblower and leaked documents emerge",
+                        "pubDate": "Sat, 23 Oct 2021 02:25:07 GMT",
+                        "link": "https://www.theguardian.com/technology/2021/oct/22/facebook-whistleblower-hate-speech-illegal-report"
+                    },
+                    {
+                        "title": "Alec Baldwin was given loaded weapon and told it was safe, court records show",
+                        "pubDate": "Sat, 23 Oct 2021 01:02:52 GMT",
+                        "link": "https://www.theguardian.com/film/2021/oct/22/alec-baldwin-film-shooting-halyna-hutchins"
+                    }
+                ]
+            }
+        ]
+    }
+]
