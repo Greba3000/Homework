@@ -8,7 +8,7 @@ from enum import Enum
 
 class AppConstant(Enum):
     """Class immutable values"""
-    ACTUAL_VERSION = 'Version 2.0.0'
+    ACTUAL_VERSION = 'Version 1.0.0'
 
 
 class AppArgParser:
@@ -21,12 +21,14 @@ class AppArgParser:
         self.parser.add_argument('--json', action='store_true', help='Print result as JSON in stdout')
         self.parser.add_argument('--verbose', action="store_true", help='Outputs verbose status messages')
         self.parser.add_argument('--limit', type=int, default=None, help='Limit news topics if this parameter provided')
-        self.parser.add_argument('source', type=str, help='URL RSS')
+        self.parser.add_argument('source', nargs="?", default=None, help='URL RSS')
+        self.parser.add_argument('--date', type=int, default=None,
+                                 help='Print news published on a specific date from cache')
 
     def get_args(self) -> argparse.Namespace:
         """
         Initialization of arguments
-        :return: object for storing attributes
+        :return: object storing attributes
         """
         return self.parser.parse_args()
 
