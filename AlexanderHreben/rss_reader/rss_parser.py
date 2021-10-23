@@ -4,19 +4,23 @@ import json
 import xmltodict
 import logging
 import config
+
 from getter import GetterXml
+import cacher
 
 logger = logging.getLogger('app.rss_parser')
 
 
 class Printer:
     """Class for printing info"""
-
-    def print_info(self, data_to_print: dict):
+    
+    @staticmethod
+    def print_info(data_to_print: dict):
         """
         Print info in stdout
         :param data_to_print: data for printing
         """
+
         for item in data_to_print['item']:
             print('\n', "- " * 10, '\n')
             print(f'Title: {item.get("title")}\nData: {item.get("pubDate")}\nLink: {item.get("link")}')
@@ -24,11 +28,13 @@ class Printer:
             #     print(f'\nDescription: {item.get("description")}')
             # print(f'\n\nLinks:\n[1]: {item.get("link")}\n[2]: {item.get("media:thumbnail").get("@url")}')
 
-    def print_info_json(self, data_to_print: dict):
+    @staticmethod
+    def print_info_json(data_to_print: dict):
         """
         Print info in json format
         :param data_to_print: data for printing
         """
+
         for item in data_to_print['item']:
             item_in_json = json.dumps(item, ensure_ascii=False).encode('utf8')
             print('\n', "- " * 10, '\n')
@@ -38,7 +44,8 @@ class Printer:
 class RssParser:
     """Class for parsing response received by getter.py and printing result"""
 
-    def parse_xml(self, args) -> dict:
+    @staticmethod
+    def parse_xml(args) -> dict:
         """
         Transform XML data to dict
         :arg args: set of arguments
@@ -48,7 +55,7 @@ class RssParser:
         logger.debug(data_dict_input)
         data_dict_out = {"item": []}
 
-        for item in data_dict_input['rss']['channel']['item'][:args.limit]:
+        for item in data_dict_input['rss']['channel']['item']:
             data_dict_out['item'].append(
                 {"title": item.get("title"), "pubDate": item.get("pubDate"),
                  "link": item.get("link")})  # "description": item.get("description")
@@ -56,8 +63,15 @@ class RssParser:
         return data_dict_out
 
     @staticmethod
+    def limit(data: dict, limit: int) -> dict:
+        out_dict = dict()
+        out_dict['item'] = (data['item'][:limit])
+        return out_dict
+
+    @staticmethod
     def start():
         """ Start work with rss_parser"""
+
         args = config.AppArgParser().get_args()
 
         if args.verbose:
@@ -69,8 +83,16 @@ class RssParser:
         parser = RssParser()
         logger.info("Module rss_parser is starting.")
 
-        if args.json:
-            logger.info(f'Json mode activated.')
-            Printer().print_info_json(parser.parse_xml(args))
+        if args.date:
+            cache = cacher.Cacher(args.source).get_cache_data(args.date) # все новости из кеша по датам
+            limited_cache = RssParser.limit(cache, args.limit) # лимитим и принтим
+            Printer().print_info(limited_cache)
         else:
-            Printer().print_info(parser.parse_xml(args))
+            feed = parser.parse_xml(args)  # тут все новости из рсс
+            limited_feed = RssParser.limit(feed, args.limit) # лимитим
+            cacher.Cacher(args.source).cache(limited_feed) # кэшируем
+            if args.json:
+                logger.info(f'Json mode activated.')
+                Printer().print_info_json(limited_feed)
+            else:
+                Printer().print_info(limited_feed)
