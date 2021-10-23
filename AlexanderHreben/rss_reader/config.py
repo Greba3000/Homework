@@ -8,7 +8,7 @@ from enum import Enum
 
 class AppConstant(Enum):
     """Class immutable values"""
-    ACTUAL_VERSION = 'Version 1.0.0'
+    ACTUAL_VERSION = 'Version 2.0.0'
 
 
 class AppArgParser:

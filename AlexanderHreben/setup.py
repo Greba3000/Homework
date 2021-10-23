@@ -8,7 +8,7 @@ def read(file_name):
 
 setup(
     name='grebarss',
-    version='1.0.2',
+    version='2.0.0',
     author='Alexander Hreben',
     url='https://github.com/Greba3000/Homework',
     author_email='greba3000@gmail.com',
