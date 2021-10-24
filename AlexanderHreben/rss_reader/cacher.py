@@ -69,28 +69,27 @@ class Cacher:
                         # print(json_dicts[counter].get(self.source)[0].get('item')) - list
                         for item in json_dicts[counter_dict_source_pos].get(self.source)[0].get(
                                 'item'):  # итем это итем нужного нам словаря
-                            #print(item['pubDate'])
+                            # print(item['pubDate'])
                             if date == Cacher.get_convert_date(item['pubDate']):
                                 out_dict_source.get('item').append(item)
                     counter_dict_source_pos += 1
                 logger.debug(f'Out dict with source news from cache - {out_dict_source}')
-                #print(out_dict_source)
+                # print(out_dict_source)
                 return out_dict_source
             else:
                 counter_dict_all_pos = 0
-                for elem in json_dicts: # дик кажого юрла
-                    #print('----', elem)
+                for elem in json_dicts:  # дик кажого юрла
+                    # print('----', elem)
                     for key in elem.keys():
                         key_url = key
-                    #print(elem.get(key_url)[0].get('item'))
+                    # print(elem.get(key_url)[0].get('item'))
                     for item in elem.get(key_url)[0].get('item'):  # итем словаря
                         if date == Cacher.get_convert_date(item['pubDate']):
                             out_dict_all.get('item').append(item)
                     counter_dict_all_pos += 1
-                #print(out_dict_all)
+                # print(out_dict_all)
                 logger.debug(f'Out dict with all news from cache - {out_dict_all}')
                 return out_dict_all
-
 
     @staticmethod
     def get_convert_date(date: str):
@@ -102,6 +101,3 @@ class Cacher:
         temp_date = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z")
         parsed_date = int(f"{temp_date.year}{temp_date.month:02d}{temp_date.day:02d}")
         return parsed_date
-
-
-Cacher(None).get_cache_data(20211021)
