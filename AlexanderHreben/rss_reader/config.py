@@ -1,14 +1,15 @@
 """Storage module with settings for argparse and logging"""
 
-import argparse
 import logging
 import sys
 from enum import Enum
 
+import argparse
+
 
 class AppConstant(Enum):
     """Class immutable values"""
-    ACTUAL_VERSION = 'Version 3.0.0'
+    ACTUAL_VERSION = 'Version 4.0.0'
 
 
 class AppArgParser:
@@ -24,6 +25,10 @@ class AppArgParser:
         self.parser.add_argument('source', nargs="?", default=None, help='URL RSS')
         self.parser.add_argument('--date', type=int, default=None,
                                  help='Print news published on a specific date from cache')
+        self.parser.add_argument('--to-html', type=str, nargs="?", metavar="PATH",
+                                 help="Convert news to HTML format and save them by the specified folder path")
+        self.parser.add_argument('--to-pdf', type=str, nargs="?", metavar="PATH",
+                                 help="Convert news to PDF format and save them by the specified folder path")
 
     def get_args(self) -> argparse.Namespace:
         """
