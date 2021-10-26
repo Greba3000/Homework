@@ -21,6 +21,8 @@ class GetterXml:
         """
         self.url = url
 
+        logger.info(f'Make request to URL - {self.url}')
+
         try:
             self.response = requests.get(self.url)
             logger.debug(self.response)
@@ -28,15 +30,15 @@ class GetterXml:
             logger.error(err)
 
         if self.response.ok:
-            if GetterXml.is_response_status_200(self.response):
+            if GetterXml._is_response_status_200(self.response):
                 logger.info(f'Status response is good')
                 return self.response
             else:
                 logger.warning(f'Current status code response is {self.response.status_code}')
-                return self.response  # правильно ли отправлять 300 код в обработку?
+                return self.response
 
     @staticmethod
-    def is_response_status_200(resp) -> bool:
+    def _is_response_status_200(resp) -> bool:
         """
         Check is status code 200
         :param resp: response object
