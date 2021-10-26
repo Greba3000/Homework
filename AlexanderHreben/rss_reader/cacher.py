@@ -19,20 +19,21 @@ class Cacher:
         """
         :param source: URL of the RSS resource
         """
-        
+
     def cache(self, feed: dict):
         """
         Saves news from rss_parser to the repository (db.json)
         :param feed: dictionary containing news from rss_parser
         """
-        
+        logger.info('Module cacher is starting to save news.')
+
         with open(self.cache_file_path, "r+", encoding="utf-8") as cache_file:
-            json_content = cache_file.read()
-            json_dicts = json.loads(json_content)
+            json_content: str = cache_file.read()
+            json_dicts: list = json.loads(json_content)
 
             url_list = []
             counter = 0
-            
+
             for elem in json_dicts:
                 url_list.append([key for key in elem.keys()])
                 if self.source in elem:
@@ -44,9 +45,11 @@ class Cacher:
             logger.debug(f'URL used list - {url_list}')
             if [self.source] not in url_list:
                 json_dicts.append({self.source: [feed]})
+            logger.debug(f'News for save - {type(json_dicts)}, {json_dicts}')
 
         with open(self.cache_file_path, "w", encoding="utf-8") as cache_file:
             json.dump(json_dicts, cache_file, indent=4, ensure_ascii=False)
+        logger.info('Module cacher is finishing.')
 
     def get_cache_data(self, date: int) -> dict:
         """
@@ -54,34 +57,35 @@ class Cacher:
         :param date: value date in %Y%m%d format
         :return: dict containing news from repository (db.json)
         """
-        out_dict_source = {'item': []}
-        out_dict_all = {'item': []}
-        
+        out_dict_one_source = {'item': []}
+        out_dict_all_sources = {'item': []}
+
         with open(self.cache_file_path, "r", encoding="utf-8") as cache_file:
-            json_content = cache_file.read()
-            json_dicts = json.loads(json_content)
-            
+            json_dicts: list = json.loads(cache_file.read())
+
             if self.source:
                 counter_dict_source_pos = 0
                 for elem in json_dicts:
                     if self.source in elem:
                         for item in json_dicts[counter_dict_source_pos].get(self.source)[0].get('item'):
-                            if date == Cacher.get_convert_date(item['pubDate']):
-                                out_dict_source.get('item').append(item)
+                            if date == Cacher._get_convert_date(item['pubDate']):
+                                out_dict_one_source.get('item').append(item)
                     counter_dict_source_pos += 1
-                logger.debug(f'Out dict with source news from cache - {out_dict_source}')
-                return out_dict_source
+                logger.debug(f'Out dict with source news from cache - {out_dict_one_source}')
+                logger.info('Module cacher is finishing.')
+                return out_dict_one_source
             else:
                 counter_dict_all_pos = 0
                 for elem in json_dicts:
-                    for key in elem.keys():
-                        key_url = key
-                    for item in elem.get(key_url)[0].get('item'):
-                        if date == Cacher._get_convert_date(item['pubDate']):
-                            out_dict_all.get('item').append(item)
+                    for key_url in elem.keys():
+                        for item in elem.get(key_url)[0].get('item'):
+                            if date == Cacher._get_convert_date(item['pubDate']):
+                                item['source'] = key_url
+                                out_dict_all_sources.get('item').append(item)
                     counter_dict_all_pos += 1
-                logger.debug(f'Out dict with all news from cache - {out_dict_all}')
-                return out_dict_all
+                logger.debug(f'Out dict with all news from cache - {out_dict_all_sources}')
+                logger.info('Module cacher is finishing.')
+                return out_dict_all_sources
 
     @staticmethod
     def _get_convert_date(date: str) -> int:
