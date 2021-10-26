@@ -1,69 +1,55 @@
-"""Storage module for classes RssParser and Printer"""
+"""Storage module for classes RssParser"""
 
-import json
-import xmltodict
 import logging
-import config
+import re
 
+import xmltodict
+
+import urlmarker
+import config
+from cacher import Cacher
+from converter import Converter
 from getter import GetterXml
-import cacher
+from printer import Printer
 
 logger = logging.getLogger('app.rss_parser')
-
-
-class Printer:
-    """Class for printing info"""
-    
-    @staticmethod
-    def print_info(data_to_print: dict):
-        """
-        Print info in stdout
-        :param data_to_print: data for printing
-        """
-
-        for item in data_to_print['item']:
-            print('\n', "- " * 10, '\n')
-            print(f'Title: {item.get("title")}\nData: {item.get("pubDate")}\nLink: {item.get("link")}')
-            # if item.get("description"):
-            #     print(f'\nDescription: {item.get("description")}')
-            # print(f'\n\nLinks:\n[1]: {item.get("link")}\n[2]: {item.get("media:thumbnail").get("@url")}')
-
-    @staticmethod
-    def print_info_json(data_to_print: dict):
-        """
-        Print info in json format
-        :param data_to_print: data for printing
-        """
-
-        for item in data_to_print['item']:
-            item_in_json = json.dumps(item, ensure_ascii=False).encode('utf8')
-            print('\n', "- " * 10, '\n')
-            print(item_in_json.decode())
 
 
 class RssParser:
     """Class for parsing response received by getter.py and printing result"""
 
     @staticmethod
-    def parse_xml(args) -> dict:
+    def _get_image_link(item: dict) -> str:
+        url_list = set(re.findall(urlmarker.URL_REGEX, str(item)))
+        logger.debug(f'{type(url_list)}Url list - {url_list}')
+        for link in url_list:
+            if link.endswith('.jpg') or link.endswith('.jpeg') or link.endswith('.png') or link.startswith(
+                    'https://s.yimg') or link.startswith('https://i.guim'):
+                return link
+
+    @staticmethod
+    def _parse_xml(args) -> dict:
         """
         Transform XML data to dict
         :arg args: set of arguments
         :return: dictionary with XLM data
         """
         data_dict_input = xmltodict.parse(GetterXml().get_response(args.source).text, encoding='utf-8')
-        logger.debug(data_dict_input)
+        logger.debug(f'All news in raw dict - {data_dict_input}')
         data_dict_out = {"item": []}
 
         for item in data_dict_input['rss']['channel']['item']:
             data_dict_out['item'].append(
-                {"title": item.get("title"), "pubDate": item.get("pubDate"),
-                 "link": item.get("link")})  # "description": item.get("description")
-        logger.debug(f'Out dict - {data_dict_out}')
+                {"title": item.get("title"),
+                 "pubDate": item.get("pubDate"),
+                 "link": item.get("link"),
+                 "image": RssParser._get_image_link(item)})
+
+        logger.debug(f'All news in final dict - {data_dict_out}')
         return data_dict_out
 
     @staticmethod
-    def limit(data: dict, limit: int) -> dict:
+    def _limit(data: dict, limit: int) -> dict:
         out_dict = dict()
         out_dict['item'] = (data['item'][:limit])
         return out_dict
@@ -71,28 +57,44 @@ class RssParser:
     @staticmethod
     def start():
         """ Start work with rss_parser"""
+        logger.info("Module rss_parser is starting.")
 
         args = config.AppArgParser().get_args()
+        logger.debug(f'Argparse sent these arguments - {args.__dict__}')
 
         if args.verbose:
             config.AppLogger.activate_verbose()
             logger.info(f'Verbose mode activated.')
 
-        logger.debug(f'Argparse sent these arguments - {args.__dict__}')
-
         parser = RssParser()
-        logger.info("Module rss_parser is starting.")
 
         if args.date:
-            cache = cacher.Cacher(args.source).get_cache_data(args.date) # все новости из кеша по датам
-            limited_cache = RssParser.limit(cache, args.limit) # лимитим и принтим
-            Printer().print_info(limited_cache)
+            cache: dict = Cacher(args.source).get_cache_data(args.date)
+            limited_cache = RssParser._limit(cache, args.limit)
+            logger.debug(f'limited cache - {limited_cache}')
+            if args.to_html:
+                Converter(args.source, limited_cache, args.to_html).to_html()
+            elif args.to_pdf:
+                Converter(args.source, limited_cache, args.to_pdf).to_pdf()
+            else:
+                Printer().print_info(limited_cache)
         else:
-            feed = parser.parse_xml(args)  # тут все новости из рсс
-            limited_feed = RssParser.limit(feed, args.limit) # лимитим
-            cacher.Cacher(args.source).cache(limited_feed) # кэшируем
+            feed: dict = parser._parse_xml(args)
+            limited_feed = RssParser._limit(feed, args.limit)
+            logger.debug(f'limited feed for cache - {limited_feed}')
+            Cacher(args.source).cache(limited_feed)
+
             if args.json:
                 logger.info(f'Json mode activated.')
                 Printer().print_info_json(limited_feed)
+                if args.to_html:
+                    Converter(args.source, limited_feed, args.to_html).to_html()
+                elif args.to_pdf:
+                    Converter(args.source, limited_feed, args.to_pdf).to_pdf()
             else:
-                Printer().print_info(limited_feed)
+                if args.to_html:
+                    Converter(args.source, limited_feed, args.to_html).to_html()
+                elif args.to_pdf:
+                    Converter(args.source, limited_feed, args.to_pdf).to_pdf()
+                else:
+                    Printer().print_info(limited_feed)
