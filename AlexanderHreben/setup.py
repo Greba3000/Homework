@@ -1,6 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
+from config import AppConstant
 
 def read(file_name):
     return open(os.path.join(os.path.dirname(__file__), file_name)).read()
@@ -8,7 +9,7 @@ def read(file_name):
 
 setup(
     name='grebarss',
-    version='3.0.0',
+    version=AppConstant.ACTUAL_VERSION.value,
     author='Alexander Hreben',
     url='https://github.com/Greba3000/Homework',
     author_email='greba3000@gmail.com',
