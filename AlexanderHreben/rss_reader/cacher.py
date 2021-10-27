@@ -106,5 +106,7 @@ class Cacher:
                 temp_date = datetime.strptime(date, date_format)
             except ValueError:
                 pass
-        parsed_date = int(f"{temp_date.year}{temp_date.month:02d}{temp_date.day:02d}")
-        return parsed_date
+
+        if not temp_date:
+            raise ValueError(f'{date} - incorrect data format')
+        return int(f"{temp_date.year}{temp_date.month:02d}{temp_date.day:02d}")
