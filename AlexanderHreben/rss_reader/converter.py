@@ -4,7 +4,6 @@ import logging
 from pathlib import Path
 
 from jinja2 import Template
-from json2html import *
 from xhtml2pdf import pisa
 
 logger = logging.getLogger('app.converter')
@@ -16,23 +15,13 @@ class Converter:
 
     def __init__(self, source, feed: dict, folder_path: str):
         self.folder_path = folder_path
-        self.html_table_str = self._get_html_table(feed)
-        self.html_str = self._get_html_with_temp(feed=feed, url=source,
-                                                 fonts_path=str(Path(Path(__file__).parent.resolve(), "fonts")))
+        self.feed = feed
+        self.source = source
         """
         :param source: URL of the RSS source. If not specifying RSS source - None
         :param feed: dict with limited news
         :param folder_path: path to the folder where the converted files will be created
         """
-
-    @staticmethod
-    def _get_html_table(json_feed) -> str:
-        """
-        Gets html table string using a template for further conversion
-        :param json_feed: data to convert to html
-        :return: html table str with data
-        """
-        return json2html.convert(json=json_feed)
 
     @staticmethod
     def _get_html_with_temp(**kwargs) -> str:
@@ -51,7 +40,11 @@ class Converter:
         try:
             logger.info("Start converting feeds to HTML")
             with open(file_path, 'w', encoding='utf-8') as html_file:
-                html_file.write(self.html_str)
+                html_file.write(self._get_html_with_temp(
+                    feed=self.feed,
+                    url=self.source,
+                    fonts_path=str(Path(Path(__file__).parent.resolve(), "fonts")),
+                ))
         except Exception as exc:
             logger.exception(exc)
         else:
@@ -64,7 +57,11 @@ class Converter:
         try:
             logger.info("Start converting feeds to PDF")
             with open(file_path, 'w+b') as pdf_file:
-                pisa.CreatePDF(self.html_str, dest=pdf_file)
+                pisa.CreatePDF(self._get_html_with_temp(
+                    feed=self.feed,
+                    url=self.source,
+                    fonts_path=str(Path(Path(__file__).parent.resolve(), "fonts")),
+                ), dest=pdf_file)
         except Exception as exc:
             logger.exception(exc)
         else:
