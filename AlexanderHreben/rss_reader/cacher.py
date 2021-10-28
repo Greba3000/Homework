@@ -1,5 +1,7 @@
 """Storage module for Cacher class"""
 
+from pathlib import Path
+
 import json
 import logging
 from datetime import datetime
@@ -15,7 +17,9 @@ class Cacher:
 
     def __init__(self, source):
         self.source = source
-        self.cache_file_path = "db.json"
+        current_dir = Path(__file__).parent.resolve()
+        file_path = Path(current_dir, 'database/db.json')
+        self.cache_file_path = file_path
         """
         :param source: URL of the RSS resource
         """
