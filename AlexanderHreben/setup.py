@@ -1,7 +1,8 @@
 import os
 from setuptools import setup, find_packages
 
-from config import AppConstant
+from grebarss_reader.config import AppConstant
+
 
 def read(file_name):
     return open(os.path.join(os.path.dirname(__file__), file_name)).read()
@@ -15,17 +16,17 @@ setup(
     author_email='greba3000@gmail.com',
     description="CLI utility for reading news",
     keyword="CLI reader news",
-    packages=find_packages(),  # packages=['rss_reader', 'tests']
+    packages=find_packages(),
     longdescription=read('README.md'),
+    license="MIT",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
         'Environment :: Console',
     ],
-    #install_requires=read('requirements.txt'),
-    #package_dir={"": "rss_reader"},
+    install_requires=read('requirements.txt').splitlines(),
     python_requires=">=3.9",
     entry_points={
-        "console_scripts": ["grebarss=rss_reader.rss_reader:main"],
+        "console_scripts": ["grebarss=grebarss_reader.rss_reader:main"],
     },
 )
