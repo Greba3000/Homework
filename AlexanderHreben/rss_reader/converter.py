@@ -30,7 +30,10 @@ class Converter:
         :param kwargs: data to install into the template
         :return: html str with data
         """
-        template = Template(open("html_template.jinja2").read())
+        current_dir = Path(__file__).parent.resolve()
+        path_to_templates = Path(current_dir, "templates")
+
+        template = Template(open(Path(path_to_templates, "html_template.jinja2")).read())
         return template.render(**kwargs)
 
     def to_html(self):
