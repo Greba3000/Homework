@@ -1,6 +1,0 @@
-.idea
-venv
-__pycache__
-dist
-grebarss.egg-info
-rss_reader/mylogs.log
