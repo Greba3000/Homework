@@ -51,7 +51,7 @@ class AppLogger:
         logger.setLevel(logging.DEBUG)
 
         current_dir = Path(__file__).parent.resolve()
-        file_path = Path (current_dir, 'logs/grebarss_logs.log')
+        file_path = Path(current_dir, 'logs/grebarss_logs.log')
 
         fh = logging.FileHandler(filename=file_path, mode='w', encoding='utf-8')
         fh.setFormatter(logging.Formatter(AppLogger.FORMAT))
