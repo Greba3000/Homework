@@ -3,6 +3,7 @@
 import logging
 import sys
 from enum import Enum
+from pathlib import Path
 
 import argparse
 
@@ -49,7 +50,10 @@ class AppLogger:
         logger = logging.getLogger(name)
         logger.setLevel(logging.DEBUG)
 
-        fh = logging.FileHandler(filename='mylogs.log', mode='w', encoding='utf-8')
+        current_dir = Path(__file__).parent.resolve()
+        file_path = Path (current_dir, 'logs/grebarss_logs.log')
+
+        fh = logging.FileHandler(filename=file_path, mode='w', encoding='utf-8')
         fh.setFormatter(logging.Formatter(AppLogger.FORMAT))
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
