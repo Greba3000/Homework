@@ -1,5 +1,7 @@
 """Storage module for classes RssParser"""
 
+import json
+
 import logging
 import re
 
@@ -28,17 +30,26 @@ class RssParser:
                 return link
 
     @staticmethod
-    def _parse_xml(args) -> dict:
+    def _get_raw_feed(source: str):
+        """
+        Transform XML data to dict with all news
+        :arg source: URL source with news
+        :return: dictionary with raw feed (all news)
+        """
+        raw_feed = xmltodict.parse(GetterXml().get_response(source).text, encoding='utf-8')
+        logger.debug(f'All news in raw dict (feed) - {raw_feed}')
+        return raw_feed
+
+    @staticmethod
+    def _parse_xml(raw_feed) -> dict:
         """
         Transform XML data to dict
         :arg args: set of arguments
         :return: dictionary with XLM data
         """
-        data_dict_input = xmltodict.parse(GetterXml().get_response(args.source).text, encoding='utf-8')
-        logger.debug(f'All news in raw dict - {data_dict_input}')
         data_dict_out = {"item": []}
 
-        for item in data_dict_input['rss']['channel']['item']:
+        for item in raw_feed['rss']['channel']['item']:
             data_dict_out['item'].append(
                 {"title": item.get("title"),
                  "pubDate": item.get("pubDate"),
@@ -79,7 +90,7 @@ class RssParser:
             else:
                 Printer().print_info(limited_cache)
         else:
-            feed: dict = parser._parse_xml(args)
+            feed: dict = parser._parse_xml(parser._get_raw_feed(args.source))
             limited_feed = RssParser._limit(feed, args.limit)
             logger.debug(f'limited feed for cache - {limited_feed}')
             Cacher(args.source).cache(limited_feed)
