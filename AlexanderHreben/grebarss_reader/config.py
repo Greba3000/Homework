@@ -10,7 +10,7 @@ import argparse
 
 class AppConstant(Enum):
     """Class immutable values"""
-    ACTUAL_VERSION = 'Version 4.0.0'
+    ACTUAL_VERSION = 'Version 4.1.0'
 
 
 class AppArgParser:
