@@ -1,10 +1,32 @@
-# rss_reader 
+# RSS reader 
 
 A command-line utility for reading news with RSS, written in Python 3.9. The utility written as a final task for EPAM Python Training 2021.09  
 
-## Installation
+## Installation and run
 
-$ pip install grebarss
+1. With pip install:
+
+
+    $ pip install grebarss
+
+Now you can run the utility in two ways:
+
+    $ grebarss <arguments>
+    or
+    $ grebarss_reader <arguments>
+
+2. With Git:
+
+
+    $ git clone https://github.com/Greba3000/Homework
+
+    $ pip install -r requirements.txt
+
+    $ cd .../Homework/AlexanderHreben/grebarss_reader
+
+Now you can run the utility:
+
+    $ python rss_reader.py <arguments>
 
 ## Usage
 
@@ -36,22 +58,44 @@ In case of using --json argument utility convert the news into JSON format. JSON
 - Each data element is enclosed with quotes "" if it is a character, or without quotes if it is a numeric value.
 
 Example of item containing news:
-{
+{...
     "item": [
         {
             "title": "title_data",
             "pubDate": "pubDate_data",
             "link": "link_data"
+            "image": "image_data"
         }
     ]
-}
+...}
+
+## Testing
+
+For testing do following:
+
+    $ cd .../Homework/AlexanderHreben/grebarss_reader 
+    or
+    $ cd .../Homework/AlexanderHreben/grebarss_reader/tests
+
+    $ pytest
+
+Test coverage is 54%. To check this, do the following:
+
+    $ pip install pytest pytest-cov
+
+    $ cd .../Homework/AlexanderHreben/grebarss_reader
+    or
+    $ cd .../Homework/AlexanderHreben/grebarss_reader/tests
+
+    $ pytest --cov=grebarss_reader
 
 ## License
 
-...
+Distributed under the MIT License. See LICENSE.txt for more information.
 
 ## Contact
 
+Email - greba3000@gmail.com
 Follow me on LinkedIn - https://www.linkedin.com/in/alexander-greben-87209319b/
 
 
