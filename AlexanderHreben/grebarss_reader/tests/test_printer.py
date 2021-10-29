@@ -7,9 +7,10 @@ from pathlib import Path
 
 import pytest
 
+sys.path.append(os.path.dirname(os.getcwd()))
 sys.path.append(os.getcwd())
 
-from grebarss_reader.printer import Printer
+from printer import Printer
 
 
 @pytest.fixture
@@ -37,7 +38,7 @@ def test_encoding_print_stdout(printer_instance, sample_feed, tmpdir):
     :param printer_instance:
     :param sample_feed:
     """
-    expected_data = '\n - - - - - - - - - - - - - - - - - - - -  \n\nTitle: «Для тестирования ёЙ\nData: !@$%^*()/+- &#39\nLink: For test Q\nImage: NoneImage: None\n'
+    expected_data = '\n - - - - - - - - - - - - - - - - - - - -  \n\nTitle: «Для тестирования ёЙ\nData: !@$%^*()/+- &#39\nLink: For test Q\nImage: None\n'
 
     with open(Path(str(tmpdir), 'stdout.txt'), 'w', encoding='utf-8') as file:
         with redirect_stdout(file):

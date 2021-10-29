@@ -1,4 +1,4 @@
-"""  """
+"""This module contains tests for module grebarss_parser.py"""
 
 import os
 import sys
