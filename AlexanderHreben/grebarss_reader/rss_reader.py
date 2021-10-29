@@ -1,14 +1,15 @@
 """Main module for working with APP"""
+
 import os
 import sys
 from pathlib import Path
 
 import logging
 
-sys.path.append(os.getcwd())
+sys.path.append(os.path.dirname(os.getcwd()))
 
-from config import AppLogger
-from grebarss_parser import RssParser
+from grebarss_reader.config import AppLogger
+from grebarss_reader.grebarss_parser import RssParser
 
 AppLogger.init_logger('app')
 logger = logging.getLogger("app.rss_reader")

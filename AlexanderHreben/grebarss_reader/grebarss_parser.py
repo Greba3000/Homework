@@ -1,5 +1,7 @@
 """Storage module for classes RssParser"""
 
+import os
+import sys
 import json
 
 import logging
@@ -7,12 +9,14 @@ import re
 
 import xmltodict
 
-import urlmarker as urlmarker
-import config as config
-from cacher import Cacher
-from converter import Converter
-from getter import GetterXml
-from printer import Printer
+sys.path.append(os.path.dirname(os.getcwd()))
+
+import grebarss_reader.urlmarker as urlmarker
+import grebarss_reader.config as config
+from grebarss_reader.cacher import Cacher
+from grebarss_reader.converter import Converter
+from grebarss_reader.getter import GetterXml
+from grebarss_reader.printer import Printer
 
 logger = logging.getLogger('app.rss_parser')
 
