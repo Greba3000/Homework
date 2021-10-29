@@ -8,7 +8,7 @@ import pytest
 sys.path.append(os.path.dirname(os.getcwd()))
 sys.path.append(os.getcwd())
 
-from cacher import Cacher
+from grebarss_reader.cacher import Cacher
 
 
 @pytest.fixture

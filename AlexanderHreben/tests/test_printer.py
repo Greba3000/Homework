@@ -10,7 +10,7 @@ import pytest
 sys.path.append(os.path.dirname(os.getcwd()))
 sys.path.append(os.getcwd())
 
-from printer import Printer
+from grebarss_reader.printer import Printer
 
 
 @pytest.fixture
@@ -32,17 +32,24 @@ def sample_feed():
 
 
 def test_encoding_print_stdout(printer_instance, sample_feed, tmpdir):
-    """
-    Checks the printing of characters without encoding issues
-    :param tmpdir: object temp catalog
-    :param printer_instance:
-    :param sample_feed:
-    """
     expected_data = '\n - - - - - - - - - - - - - - - - - - - -  \n\nTitle: «Для тестирования ёЙ\nData: !@$%^*()/+- &#39\nLink: For test Q\nImage: None\n'
 
     with open(Path(str(tmpdir), 'stdout.txt'), 'w', encoding='utf-8') as file:
         with redirect_stdout(file):
             printer_instance.print_info(sample_feed)
+
+    with open(Path(str(tmpdir), 'stdout.txt'), 'r', encoding='utf-8') as file:
+        printed_data = file.read()
+
+    assert (printed_data == expected_data)
+
+
+def test_encoding_print_json_stdout(printer_instance, sample_feed, tmpdir):
+    expected_data = '\n - - - - - - - - - - - - - - - - - - - -  \n\n{"title": "«Для тестирования ёЙ", "pubDate": "!@$%^*()/+- &#39", "link": "For test Q"}\n'
+
+    with open(Path(str(tmpdir), 'stdout.txt'), 'w', encoding='utf-8') as file:
+        with redirect_stdout(file):
+            printer_instance.print_info_json(sample_feed)
 
     with open(Path(str(tmpdir), 'stdout.txt'), 'r', encoding='utf-8') as file:
         printed_data = file.read()

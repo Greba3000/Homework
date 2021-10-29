@@ -7,8 +7,10 @@ import pytest
 
 sys.path.append(os.path.dirname(os.getcwd()))
 sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(), "grebarss_reader"))
+print(sys.path)
 
-from grebarss_parser import RssParser
+from grebarss_reader.grebarss_parser import RssParser
 
 
 @pytest.fixture
@@ -45,7 +47,7 @@ def sample_raw_feed():
                             "@isPermaLink": "false",
                             "#text": "https://people.onliner.by/2021/10/28/koncert-lobody-perenesen"
                         },
-                        "description": "<p><a href=\"https://people.onliner.by/2021/10/28/koncert-lobody-perenesen\"><img src=\"https://content.onliner.by/news/thumbnail/3d33bec0a75574948271cf565f6abc9c.jpeg\" alt=\"\" /></a></p><p>Светлана Лобода должна была дать шоу Boom-Boom! в «Минск-Арене» 6 ноября. Но не в этот раз: мероприятие переносится по неназванным причинам. Можно предположить, из-за COVID-19. На когда — неизвестно. Продавцы билетов (стоили от 49 до 154 рублей) просят сохранять спокойствие, билеты и ждать информации.</p><p><a href=\"https://people.onliner.by/2021/10/28/koncert-lobody-perenesen\">Читать далее…</a></p>",
+                        "description": "Светлана Лобода должна была дать шоу Boom-Boom!",
                         "media:thumbnail": {
                             "@url": "https://content.onliner.by/news/thumbnail/3d33bec0a75574948271cf565f6abc9c.jpeg"
                         }
