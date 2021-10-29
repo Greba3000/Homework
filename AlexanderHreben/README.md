@@ -13,7 +13,7 @@ Now you can run the utility in two ways:
 
     $ grebarss <arguments>
     or
-    $ grebarss_reader <arguments>
+    $ rss_reader <arguments>
 
 2. With Git:
 
@@ -73,19 +73,19 @@ Example of item containing news:
 
 For testing do following:
 
-    $ cd .../Homework/AlexanderHreben/grebarss_reader 
-    or
-    $ cd .../Homework/AlexanderHreben/grebarss_reader/tests
+    $ cd .../Homework/AlexanderHreben/ 
+For run all tests:
 
-    $ pytest
+    $ pytest 
+For run specify test:
 
-Test coverage is 54%. To check this, do the following:
+    $ pytest <name of test>
+
+Test coverage is 52%. To check this, do the following:
 
     $ pip install pytest pytest-cov
 
-    $ cd .../Homework/AlexanderHreben/grebarss_reader
-    or
-    $ cd .../Homework/AlexanderHreben/grebarss_reader/tests
+    $ cd .../Homework/AlexanderHreben
 
     $ pytest --cov=grebarss_reader
 
