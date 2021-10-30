@@ -1,4 +1,5 @@
 import os
+
 from setuptools import setup, find_packages
 
 
@@ -8,13 +9,14 @@ def read(file_name):
 
 setup(
     name='grebarss',
-    version='4.1.10',
+    version='4.1.12',
     author='Alexander Hreben',
     url='https://github.com/Greba3000/Homework',
     author_email='greba3000@gmail.com',
     description="CLI utility for reading news",
     keyword="CLI reader news",
     packages=find_packages(),
+    include_package_data=True,
     longdescription=read('README.md'),
     license="MIT",
     classifiers=[
